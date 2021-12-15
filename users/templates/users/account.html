@@ -1,0 +1,33 @@
+{% extends 'patientFlowSim/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4 ml-auto mr-auto mt-4">
+            <div class="card">
+                <h2 class="card-header">Account</h2>
+                <div class="card-body">
+                    <h5 class="card-title">Username</h5>
+                    <p class="card-text">{{ user.username }}</p>
+                    <h5 class="card-title">Name</h5>
+                    <p class="card-text">{{ user.first_name }} {{ user.last_name }}</p>
+                    <h5 class="card-title">Email</h5>
+                    <p class="card-text">{{ user.email }}</p>
+                    <h5 class="card-title">Institution</h5>
+                    <p class="card-text">{{ user.account.institution }}</p>
+
+                </div>
+            </div>
+<!--            <h3>Account information</h3>-->
+<!--            <div class="border-top pt-3">-->
+<!--                <small class="text-muted">-->
+<!--                    <a class="ml-2" href="{% url 'login' %}">Log In Again</a>-->
+<!--                </small>-->
+<!--            </div>-->
+        </div>
+      </div>
+    </div>
+    <script src="{% static 'js/account.js' %}"></script>
+{% endblock %}

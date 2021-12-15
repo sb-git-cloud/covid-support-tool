@@ -1,0 +1,582 @@
+{% extends 'patientFlowSim/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% if not sims.pk %}
+        <div class="container-fluid mx-0 px-0">
+            <img src="{% static 'media/header_cropped.jpg' %}" class="img-fluid" id="id_headerImg">
+        </div>
+    {% endif %}
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 px-md-4" id="inputdiv">
+          <form id="formInput1">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h2 class="h2">Inputs</h2>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p><span class="font-weight-bold">Prediction Time</span> (days)</p>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-10">
+                  <div class="form-group">
+                    {{ allUserInputForm.simDays }}
+                    {{ allUserInputForm.simDays.error }}
+                  </div>
+              </div>
+              <div class="col-2 text-right">
+                <output id="simDaysSliderVal">{{ allUserInputForm.simDays.initial }}</output> days
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col">
+                <p><span class="font-weight-bold">Initial Patients by Severity</span> (per day)</p>
+              </div>
+            </div>
+
+<!--            Initial patients-->
+            <div class="row mb-2">
+              <div class="col-md-4">
+                  <div class="form-group">
+                      <label for="{{ allUserInputForm.ninitials_cat1.id_for_label }}">ECMO: <output id="id_output_ninitials_cat1">{{ allUserInputForm.ninitials_cat1.initial }}</output></label>
+                    {{ allUserInputForm.ninitials_cat1 }}
+                    {{ allUserInputForm.ninitials_cat1.errors }}
+                  </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="input-group input-group-sm">
+                    <label for="{{ allUserInputForm.ninitials_cat2.id_for_label }}">Ventilated: <output id="id_output_ninitials_cat2">{{ allUserInputForm.ninitials_cat2.initial }}</output></label>
+                    {{ allUserInputForm.ninitials_cat2 }}
+                    {{ allUserInputForm.ninitials_cat2.errors }}
+                  </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="{{ allUserInputForm.ninitials_cat3.id_for_label }}">ICU Bed: <output id="id_output_ninitials_cat3">{{ allUserInputForm.ninitials_cat3.initial }}</output></label>
+                    {{ allUserInputForm.ninitials_cat3 }}
+                    {{ allUserInputForm.ninitials_cat3.errors }}
+                  </div>
+              </div>
+            </div>
+
+<!--            Arriving patients-->
+            <div class="row">
+              <div class="col">
+                  <p><span class="font-weight-bold">Arrivals of Patients by Severity</span> (per day)</p>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-4">
+                  <div class="form-group">
+                      <label for="{{ allUserInputForm.narrivals_cat1.id_for_label }}">ECMO: <output id="id_output_narrivals_cat1">{{ allUserInputForm.narrivals_cat1.initial }}</output></label>
+                    {{ allUserInputForm.narrivals_cat1 }}
+                    {{ allUserInputForm.narrivals_cat1.errors }}
+                  </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="input-group input-group-sm">
+                    <label for="{{ allUserInputForm.narrivals_cat2.id_for_label }}">Ventilated: <output id="id_output_narrivals_cat2">{{ allUserInputForm.narrivals_cat2.initial }}</output></label>
+                    {{ allUserInputForm.narrivals_cat2 }}
+                    {{ allUserInputForm.narrivals_cat2.errors }}
+                  </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="{{ allUserInputForm.narrivals_cat1.id_for_label }}">ICU Bed: <output id="id_output_narrivals_cat3">{{ allUserInputForm.narrivals_cat3.initial }}</output></label>
+                    {{ allUserInputForm.narrivals_cat3 }}
+                    {{ allUserInputForm.narrivals_cat3.errors }}
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                  <p><span class="font-weight-bold">Resources</span></p>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <div class="col">
+                <div class="card w-100 bg-light border-0">
+                    <div class="card-body">
+                        <div class="card-subtitle text-muted"><span class="">Staff</span> (# of consultations per Pt per Day)</div>
+                        <div class="table-responsive border-bottom">
+                          <table class="table bg-light table-sm input">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ECMO</th>
+                                    <th scope="col">Ventilated</th>
+                                    <th scope="col">ICU Bed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                  <td><div class="form-group">
+                                    {{ allUserInputForm.nconsultations_cat1 }}
+                                    {{ allUserInputForm.nconsultations_cat1.error }}
+                                  </div></td>
+                                  <td><div class="form-group">
+                                    {{ allUserInputForm.nconsultations_cat2 }}
+                                    {{ allUserInputForm.nconsultations_cat2.error }}
+                                  </div></td>
+                                  <td><div class="form-group">
+                                    {{ allUserInputForm.nconsultations_cat3 }}
+                                    {{ allUserInputForm.nconsultations_cat3.error }}
+                                  </div></td>
+                                </tr>
+<!--                                <tr>-->
+<!--                                  <th scope="row">ICU</th>-->
+<!--                                  <td><div class="form-group">-->
+<!--                                      {{ inputForm.mortrate_iculr }}-->
+<!--                &lt;!&ndash;                    <input class="form-control form-control-sm table" type="text" id="mortrate_iculr" name="mortrate_iculr">&ndash;&gt;-->
+<!--                                  </div></td>-->
+<!--                                  <td><div class="form-group">-->
+<!--                                    {{ inputForm.mortrate_icumr }}-->
+<!--                &lt;!&ndash;                    <input class="form-control form-control-sm table" type="text" id="mortrate_icumr" name="mortrate_icumr">&ndash;&gt;-->
+<!--                                  </div></td>-->
+<!--                                  <td><div class="form-group">-->
+<!--                                    {{ inputForm.mortrate_icuhr }}-->
+<!--                &lt;!&ndash;                    <input class="form-control form-control-sm table" type="text" id="mortrate_icuhr" name="mortrate_icuhr">&ndash;&gt;-->
+<!--                                  </div></td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                  <th scope="row">Ward</th>-->
+<!--                                  <td><div class="form-group">-->
+<!--                                    {{ inputForm.mortrate_wardlr }}-->
+<!--                &lt;!&ndash;                    <input class="form-control form-control-sm table" type="text" id="mortrate_wardlr" name="mortrate_wardlr">&ndash;&gt;-->
+<!--                                  </div></td>-->
+<!--                                  <td><div class="form-group mb-0">-->
+<!--                                    {{ inputForm.mortrate_wardmr }}-->
+<!--                &lt;!&ndash;                    <input class="form-control form-control-sm table" type="text" id="mortrate_wardmr" name="mortrate_wardmr">&ndash;&gt;-->
+<!--                                  </div></td>-->
+<!--                                  <td><div class="form-group mb-0">-->
+<!--                                    {{ inputForm.mortrate_wardhr }}-->
+<!--                &lt;!&ndash;                    <input class="form-control form-control-sm table" type="text" id="mortrate_wardhr" name="mortrate_wardhr">&ndash;&gt;-->
+<!--                                  </div></td>-->
+<!--                                </tr>-->
+                            </tbody>
+                          </table>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-subtitle text-muted"><span class="">Resource Consumption</span> (per Pt per Day)</div>
+
+                        <div class="table-responsive">
+                          <table class="table bg-light table-sm input table-hover w-100">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">ECMO</th>
+                                    <th scope="col">Ventilated</th>
+                                    <th scope="col">ICU Bed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                              <th scope="row">CT (#)</th>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat1_ct}}
+                                {{ allUserInputForm.requiredRes_cat1_ct.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat2_ct}}
+                                {{ allUserInputForm.requiredRes_cat2_ct.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat3_ct}}
+                                {{ allUserInputForm.requiredRes_cat3_ct.error}}
+                              </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">MRI (#)</th>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat1_mri}}
+                                {{ allUserInputForm.requiredRes_cat1_mri.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat2_mri}}
+                                {{ allUserInputForm.requiredRes_cat2_mri.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat3_mri}}
+                                {{ allUserInputForm.requiredRes_cat3_mri.error}}
+                              </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">PPE (#)</th>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat1_ppe}}
+                                {{ allUserInputForm.requiredRes_cat1_ppe.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat2_ppe}}
+                                {{ allUserInputForm.requiredRes_cat2_ppe.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat3_ppe}}
+                                {{ allUserInputForm.requiredRes_cat3_ppe.error}}
+                              </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Propofol (X ml/Y mg)</th>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat1_propofol}}
+                                {{ allUserInputForm.requiredRes_cat1_propofol.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat2_propofol}}
+                                {{ allUserInputForm.requiredRes_cat2_propofol.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat3_propofol}}
+                                {{ allUserInputForm.requiredRes_cat3_propofol.error}}
+                              </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Dexmedetomidine</th>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat1_dexmedetomidine}}
+                                {{ allUserInputForm.requiredRes_cat1_dexmedetomidine.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat2_dexmedetomidine}}
+                                {{ allUserInputForm.requiredRes_cat2_dexmedetomidine.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat3_dexmedetomidine}}
+                                {{ allUserInputForm.requiredRes_cat3_dexmedetomidine.error}}
+                              </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Fentanyl (X ml/Y mg)</th>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat1_fentanyl}}
+                                {{ allUserInputForm.requiredRes_cat1_fentanyl.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat2_fentanyl}}
+                                {{ allUserInputForm.requiredRes_cat2_fentanyl.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat3_fentanyl}}
+                                {{ allUserInputForm.requiredRes_cat3_fentanyl.error}}
+                              </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Morphine (X ml/Y mg)</th>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat1_morphine}}
+                                {{ allUserInputForm.requiredRes_cat1_morphine.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat2_morphine}}
+                                {{ allUserInputForm.requiredRes_cat2_morphine.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat3_morphine}}
+                                {{ allUserInputForm.requiredRes_cat3_morphine.error}}
+                              </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Morphine [Oral] (X ml/Y mg)</th>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat1_morphineOral}}
+                                {{ allUserInputForm.requiredRes_cat1_morphineOral.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat2_morphineOral}}
+                                {{ allUserInputForm.requiredRes_cat2_morphineOral.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat3_morphineOral}}
+                                {{ allUserInputForm.requiredRes_cat3_morphineOral.error}}
+                              </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Oxycodone (X ml/Y mg)</th>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat1_oxycodone}}
+                                {{ allUserInputForm.requiredRes_cat1_oxycodone.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat2_oxycodone}}
+                                {{ allUserInputForm.requiredRes_cat2_oxycodone.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat3_oxycodone}}
+                                {{ allUserInputForm.requiredRes_cat3_oxycodone.error}}
+                              </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Cisatricurium (X ml/Y mg)</th>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat1_cisatricurium}}
+                                {{ allUserInputForm.requiredRes_cat1_cisatricurium.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat2_cisatricurium}}
+                                {{ allUserInputForm.requiredRes_cat2_cisatricurium.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat3_cisatricurium}}
+                                {{ allUserInputForm.requiredRes_cat3_cisatricurium.error}}
+                              </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Vecuronium (X ml/Y mg)</th>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat1_vecuronium}}
+                                {{ allUserInputForm.requiredRes_cat1_vecuronium.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat2_vecuronium}}
+                                {{ allUserInputForm.requiredRes_cat2_vecuronium.error}}
+                              </div></td>
+                              <td><div class="form-group my-0">
+                                {{ allUserInputForm.requiredRes_cat3_vecuronium}}
+                                {{ allUserInputForm.requiredRes_cat3_vecuronium.error}}
+                              </div></td>
+                            </tr>
+                            </tbody>
+                          </table>
+                        </div>
+
+                    </div>
+                </div>
+
+              </div>
+            </div>
+          </form>
+          <form id="formInput2">
+            <div class="row">
+                <div class="col">
+                    <p class="font-weight-bold">Patient Development</p>
+                </div>
+            </div>
+<!--            <h6 class="h6">Patient Development</h6>-->
+            <div class="row">
+              <div class="col">
+                  <div class="card border-0 bg-light">
+                    <div class="card-header">
+                        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                          <li class="nav-item">
+                            <a class="nav-link active" id="pills-cat1-tab" data-toggle="pill" href="#pills-cat1" role="tab" aria-controls="pills-cat1" aria-selected="true">ECMO</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" id="pills-cat2-tab" data-toggle="pill" href="#pills-cat2" role="tab" aria-controls="pills-cat2" aria-selected="false">Ventilated</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" id="pills-cat3-tab" data-toggle="pill" href="#pills-cat3" role="tab" aria-controls="pills-cat3" aria-selected="false">ICU Bed</a>
+                          </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="pills-tabContent">
+                          <div class="tab-pane fade show active" id="pills-cat1" role="tabpanel" aria-labelledby="pills-cat1-tab">
+                              <div class="row">
+                                  <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label for="{{ allUserInputForm.daysIcu_cat1.id_for_label }}">Mean in ICU: <output id="id_output_daysIcu_cat1">{{ allUserInputForm.daysIcu_cat1.initial }}</output></label>
+                                        {{ allUserInputForm.daysIcu_cat1 }}
+                                        {{ allUserInputForm.daysIcu_cat1.error }}
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label for="{{ allUserInputForm.daysEcmo_cat1.id_for_label }}">Mean on ECMO: <output id="id_output_daysEcmo_cat1">{{ allUserInputForm.daysEcmo_cat1.initial }}</output></label>
+                                        {{ allUserInputForm.daysEcmo_cat1 }}
+                                        {{ allUserInputForm.daysEcmo_cat1.error }}
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label for="{{ allUserInputForm.daysDialysis_cat1.id_for_label }}">Mean on Dialysis: <output id="id_output_daysDialysis_cat1">{{ allUserInputForm.daysDialysis_cat1.initial }}</output></label>
+                                        {{ allUserInputForm.daysDialysis_cat1 }}
+                                        {{ allUserInputForm.daysDialysis_cat1.error }}
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <canvas class="my-4" id="chartInput-cat1" width="900" height="300"></canvas>
+                              </div>
+                          </div>
+                          <div class="tab-pane fade" id="pills-cat2" role="tabpanel" aria-labelledby="pills-cat2-tab">
+                              <div class="row">
+                                  <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label for="{{ allUserInputForm.daysIcu_cat1.id_for_label }}">Mean in ICU: <output id="id_output_daysIcu_cat2">{{ allUserInputForm.daysIcu_cat2.initial }}</output></label>
+                                        {{ allUserInputForm.daysIcu_cat2 }}
+                                        {{ allUserInputForm.daysIcu_cat2.error }}
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label for="{{ allUserInputForm.daysVent_cat1.id_for_label }}">Mean on Ventilator: <output id="id_output_daysVent_cat2">{{ allUserInputForm.daysVent_cat2.initial }}</output></label>
+                                        {{ allUserInputForm.daysVent_cat2 }}
+                                        {{ allUserInputForm.daysVent_cat2.error }}
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label for="{{ allUserInputForm.daysDialysis_cat2.id_for_label }}">Mean on Dialysis: <output id="id_output_daysDialysis_cat2">{{ allUserInputForm.daysDialysis_cat2.initial }}</output></label>
+                                        {{ allUserInputForm.daysDialysis_cat2 }}
+                                        {{ allUserInputForm.daysDialysis_cat2.error }}
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <canvas class="my-4" id="chartInput-cat2" width="900" height="300"></canvas>
+                              </div>
+                          </div>
+                          <div class="tab-pane fade" id="pills-cat3" role="tabpanel" aria-labelledby="pills-cat3-tab">
+                              <div class="row">
+                                  <div class="col-sm-6">
+                                      <div class="form-group">
+                                        <label for="{{ allUserInputForm.daysIcu_cat3.id_for_label }}">Mean in ICU: <output id="id_output_daysIcu_cat3">{{ allUserInputForm.daysIcu_cat3.initial }}</output></label>
+                                        {{ allUserInputForm.daysIcu_cat3 }}
+                                        {{ allUserInputForm.daysIcu_cat3.error }}
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-6">
+                                      <div class="form-group">
+                                        <label for="{{ allUserInputForm.daysDialysis_cat3.id_for_label }}">Mean on Dialysis: <output id="id_output_daysDialysis_cat3">{{ allUserInputForm.daysDialysis_cat3.initial }}</output></label>
+                                        {{ allUserInputForm.daysDialysis_cat3 }}
+                                        {{ allUserInputForm.daysDialysis_cat3.error }}
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <canvas class="my-4" id="chartInput-cat3" width="900" height="300"></canvas>
+                              </div>
+                          </div>
+                        </div>
+<!--                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">-->
+<!--                &lt;!&ndash;          <div class="row justify-content-between align-items-center pt-3 pb-2 mb-3">&ndash;&gt;-->
+<!--                            <div class="col-md-4">-->
+<!--                                <div class="custom-control custom-switch">-->
+<!--                                  <input type="checkbox" class="custom-control-input" id="id_switchLos" checked>-->
+<!--                                  <label class="custom-control-label" for="id_switchLos">Plot LOS</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-4">-->
+<!--                                <div class="custom-control custom-switch">-->
+<!--                                  <input type="checkbox" class="custom-control-input" id="id_switchIcuLos" checked>-->
+<!--                                  <label class="custom-control-label" for="id_switchIcuLos">Plot ICU</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-4">-->
+<!--                                <div class="custom-control custom-switch">-->
+<!--                                  <input type="checkbox" class="custom-control-input" id="id_switchVentLos" checked>-->
+<!--                                  <label class="custom-control-label" for="id_switchVentLos">Plot Ventilator</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </form>
+          <div class="d-none" id="id_hidden-input">
+              <form id="hiddenInputForm">
+                  <div class="form-group">
+                    {{allUserInputForm.daysEcmo_cat2}}{{allUserInputForm.daysEcmo_cat3}}
+                    {{allUserInputForm.daysVent_cat1}}{{allUserInputForm.daysVent_cat3}}
+                  </div>
+              </form>
+            </div>
+       </div>
+
+        <div class="col-md-6 ml-sm-auto px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h2 class="h2">Outputs</h2>
+                <form id="outputForm" action="/api/sim/outputToCsv" method="get">
+                    {{ outputForm.output }}
+                </form>
+
+            </div>
+            <div class="loading-div alert alert-secondary" role="alert" style="display: none">
+                Loading <img src="{% static 'media/loadingBar.gif' %}" alt="Loading bar" class="img-fluid loading">
+            </div>
+            <div class="row">
+              <div class="col">
+                  <p><span class="font-weight-bold">Remaining resources</span> (in ml/mg) [assume none initially]</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                  <canvas class="my-4 w-100" id="medication" width="900" height="500"></canvas>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                  <p><span class="font-weight-bold">Remaining Equipment</span> (in #) [assume none initially]</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                  <canvas class="my-4 w-100" id="resources" width="900" height="500"></canvas>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                  <p><span class="font-weight-bold">Required consultations</span> (in #)</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                  <canvas class="my-4 w-100" id="consultations" width="900" height="500"></canvas>
+              </div>
+            </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="saveModalCenter" tabindex="-1" role="dialog" aria-labelledby="saveModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="saveModalLongTitle">Save simulation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form class="px-4 py-3" id="saveForm">
+            <div class="modal-body">
+                <div id="id_formDiv">
+                    {% csrf_token %}
+                    {{ saveForm|crispy }}
+                </div>
+                <div class="success-div alert alert-success" role="alert" style="display: none">
+                    Simulation results have been saved!
+                </div>
+                <div class="danger-div alert alert-danger" role="alert" style="display: none">
+                    Error! Results could not be saved!
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="id_saveBtnClose">Close</button>
+                <button id="save_sim_btn" type="submit" class="btn btn-primary">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="{% static 'js/dashboard.js' %}"></script>
+    {% if sims.pk %}
+        <script src="{% static 'js/my_sim.js' %}"></script>
+    {% else %}
+        <script src="{% static 'js/transition_header.js' %}"></script>
+    {% endif %}
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/chartjs-plugin-colorschemes.min.js' %}"></script>
+{% endblock %}

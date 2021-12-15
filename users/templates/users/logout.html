@@ -1,0 +1,18 @@
+{% extends 'patientFlowSim/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4 ml-auto mr-auto mt-4">
+            <h3>You have been logged out!</h3>
+            <div class="border-top pt-3">
+                <small class="text-muted">
+                    <a class="ml-2" href="{% url 'login' %}">Log In Again</a>
+                </small>
+            </div>
+        </div>
+      </div>
+    </div>
+    <script src="{% static 'js/logout.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,133 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Sven Brueggemann and Robert R. Bitmead">
+    <meta name="generator" content="Jekyll v4.0.1">
+    <title>Patient Flow Simulation</title>
+
+    <link rel="canonical" href="">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/base.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/dashboard.css' %}" rel="stylesheet" type="text/css">
+<!--    <link href="{% static 'css/loading.css' %}" rel="stylesheet" type="text/css">-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  </head>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top navbar-top">
+      <a class="navbar-brand" href="#"><img src="{% static 'media/logotipo.png' %}" height="30" class="d-inline-block align-middle" alt=""></a>
+      <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon navlink-top"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item" id="id_navItemHome">
+            <a class="nav-link navlink-top dark" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+            <li class="nav-item" id="id_navItemMySimulations">
+              <a class="nav-link navlink-top dark" href="{% url 'sims' %}">My Simulations</a>
+            </li>
+            <li class="nav-item" id="id_navItemAccount">
+              <a class="nav-link navlink-top dark" href="{% url 'account' %}">Account</a>
+            </li>
+            <li class="nav-item" id="id_navItemLogout">
+              <a class="nav-link navlink-top dark" href="{% url 'logout' %}">Logout</a>
+            </li>
+          {% else %}
+            <li class="nav-item" id="id_navItemLogin">
+              <a class="nav-link navlink-top dark" href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="nav-item" id="id_navItemRegister">
+              <a class="nav-link navlink-top dark" href="{% url 'register' %}">Register</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <nav class="navbar navbar-dark bg-primary fixed-top second-nav shadow py-0  d-flex flex-nowrap">
+<!--      <div class="navbar-nav-scroll h-100 w-100">-->
+        <ul class="navbar-nav mr-auto flex-row h-100">
+            <li class="nav-item px-2 align-self-center">
+              <span class="white-text" id="id_simFrom">
+                {% if sims.pk %}
+                  Simulation data from {{ sims.date_created|date:'Y-m-d' }}</span>
+                {% endif %}
+            </li>
+          </ul>
+        {% if dashboard %}
+          <ul class="navbar-nav ml-auto flex-row h-100" id="id_saveExport">
+            {% if user.is_authenticated %}
+              <li class="nav-item active px-2 align-self-center">
+                <a class="nav-link" data-toggle="modal" data-target="#saveModalCenter" href="#">Save Sim</a>
+              </li>
+            {% endif %}
+            <li class="nav-item active px-2 align-self-center">
+              <a class="nav-link" onclick="$('#outputForm').submit();return false;" href="#">Export Sim as CSV</a>
+            </li>
+          </ul>
+        {% endif %}
+<!--      </div>-->
+    </nav>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="row">
+          <div class="col">
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% block content %}
+        replace
+    {% endblock %}
+
+  <div class="container-fluid">
+    <footer class="pt-4 my-md-5 pt-md-5 border-top">
+      <div class="row">
+<!--        <div class="col-12 col-md">-->
+<!--          <img class="mb-2" src="{% static 'media/logotipo.png' %}" height="30" alt="">-->
+<!--          <small class="d-block mb-3 text-muted">&copy; Sven Br&uuml;ggemann</small>-->
+<!--        </div>-->
+        <div class="col-6 col-md d-flex justify-content-center">
+          <ul class="list-unstyled text-small">
+            <li><img class="mb-2" src="{% static 'media/logotipo.png' %}" height="30" alt="">
+          <small class="d-block mb-3 text-muted">Copyright &copy; 2020Sven Br&uuml;ggemann</small></li>
+            <li><h5>Contact</h5></li>
+            <li><span class="text-muted">Sven Br&uuml;ggemann</span></li>
+            <li><span class="text-muted">sbruegge@ucsd.edu</span></li>
+            <li><span class="text-muted">University of California, San Diego</span></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+  </div>
+<!--  </footer>-->
+<!--  <footer class="pt-4 my-md-5 pt-md-5 border-top">-->
+<!--    <div class="row">-->
+<!--      <div class="col-12 col-md d-flex justify-content-center">-->
+<!--        <small class="d-block mb-3 text-muted">&copy; Sven Br&uuml;ggemann</small>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </footer>-->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+
+  </body>
+</html>

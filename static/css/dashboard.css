@@ -1,0 +1,19 @@
+
+.navbar-top.bg-primary.scrolled {
+    background: #fff !important;
+    transition: 0.75s ease;
+}
+.navlink-top.dark {
+    color: #07689F !important;
+}
+.navlink-top.dark:hover {
+    color: #A2D5F2 !important;
+}
+
+th {
+    font-weight: normal;
+}
+
+td {
+    vertical-align: middle !important;
+}

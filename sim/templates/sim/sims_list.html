@@ -1,0 +1,47 @@
+{% extends 'patientFlowSim/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% csrf_token %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-9 ml-auto mr-auto mt-4">
+            <div class="success-div alert alert-success" role="alert" style="display: none">
+                Simulation data has been deleted!
+            </div>
+            <div class="danger-div alert alert-danger" role="alert" style="display: none">
+                Error! Simulation data could not be deleted!
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-9 ml-auto mr-auto mt-md-5">
+            <h2>My Simulations</h2>
+            <table class="table table-sm table-hover">
+              <thead>
+                <tr>
+                    <th scope="col">Date Created</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for sim in sims %}
+                    <tr>
+                        <td>{{ sim.date_created|date:'Y-m-d' }}</td>
+                        <td>{{ sim.name }}</td>
+                        <td>{{ sim.description }}</td>
+                        <td><a href="{{ sim.get_absolute_url }}">Open</a></td>
+                        <td><a href="/api/sim/{{ sim.pk }}" class="delete_sim">Delete</a></td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+    <script src="{% static 'js/simsList.js' %}"></script>
+{% endblock %}

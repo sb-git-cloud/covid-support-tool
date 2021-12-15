@@ -1,0 +1,109 @@
+{
+  "type": "object",
+  "properties": {
+    "resources": {
+      "type": "object",
+      "properties": {
+        "CT": {
+          "type": "array",
+          "items": {
+            "type": "number"
+		  }
+	    },
+        "MRI": {
+          "type": "array",
+          "items": {
+            "type": "number"
+		  }
+	    },
+        "VENTILATOR": {
+          "type": "array",
+          "items": {
+            "type": "number"
+		  }
+	    },
+        "ECMO": {
+          "type": "array",
+          "items": {
+            "type": "number"
+		  }
+	    },
+        "PPE": {
+          "type": "array",
+          "items": {
+            "type": "number"
+		  }
+	    }
+      }
+    },
+    "medication": {
+      "type": "object",
+      "properties": {
+        "PROPOFOL": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "DEXMEDETOMIDINE": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "FENTANYL": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "MORPHINE": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "MORPHINE_ORAL": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "OXYCODONE": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "CISATRICURIUM": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "VECURONIUM": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "consultations": {
+      "type": "array",
+      "items": {
+		"type": "number",
+		"minimum": 0,
+        "multipleOf" : 0.5
+		}
+    },
+    "days": {
+      "type": "array",
+      "items": {
+		"type": "number",
+		"minimum": 0,
+        "multipleOf" : 0.5
+		}
+	}
+  }
+}
